@@ -1,5 +1,15 @@
 -- Follow me on Twitter: http://twitter.com/hackedunit
 
+tell application "GrowlHelperApp"
+	set the allNotificationsList to {"Success Notification"}
+	set the enabledNotificationsList to {"Success Notification"}
+	
+	register as application Â
+		"Twitnews" all notifications allNotificationsList Â
+		default notifications enabledNotificationsList Â
+		icon of application "NetNewsWire"
+end tell
+
 tell application "NetNewsWire"
 	if index of selected tab = 0 then
 		-- We're looking at headlines, so just get the headline URL
@@ -26,8 +36,13 @@ end tell
 set tweet to feed_title & " " & feed_url
 
 -- let the user edit
-display dialog "Edit your Twitter status" with title "TwitNews" default answer tweet cancel button 1 default button 2 buttons {"Cancel", "Send"}
-set tweet to (text returned of result)
+set tweet_dialog to display dialog "Edit your Twitter status" with title "TwitNews" default answer tweet cancel button 1 default button 2 buttons {"Cancel", "Send"}
+set tweet_action to the button returned of tweet_dialog
+if tweet_action = "" or tweet_action = "Cancel" then
+	return
+else
+	set tweet to (text returned of tweet_dialog)
+end if
 
 -- get login from keychain
 try
@@ -44,4 +59,8 @@ end try
 
 -- post to twitter
 set twitter_status to quoted form of ("status=" & tweet)
-set results to do shell script "curl --user " & twitter_login & " --data-binary " & twitter_status & " http://twitter.com/statuses/update.json"
+set tweet_results to do shell script "curl --user " & twitter_login & " --data-binary " & twitter_status & " http://twitter.com/statuses/update.json"
+
+tell application "GrowlHelperApp"
+	notify with name "Success Notification" title "Successfully tweeted" description tweet application name "Twitnews"
+end tell
