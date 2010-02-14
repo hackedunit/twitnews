@@ -29,15 +29,14 @@ tell application "NetNewsWire"
 	end if
 	-- Build the GET request for the Tr.im API
 	set feed_url to "http://api.tr.im/v1/trim_simple?url=" & feed_url
-	-- Submit the GET request and copy the results to clipboard
+	-- Submit the GET request
 	set cmd to "curl " & feed_url
 	set feed_url to (do shell script cmd)
 end tell
 
--- change the status message to your liking here:
 set tweet to feed_title & " " & feed_url
 
--- let the user edit
+-- let the user edit the tweet
 set tweet_dialog to display dialog "Edit your Twitter status" with title "TwitNews" default answer tweet cancel button 1 default button 2 buttons {"Cancel", "Send"}
 set tweet_action to the button returned of tweet_dialog
 if tweet_action = "" or tweet_action = "Cancel" then
