@@ -27,8 +27,8 @@ tell application "NetNewsWire"
 		set feed_url to item i of URL_list
 		set feed_title to item i of title_list
 	end if
-	-- Build the GET request for the is.gd API
-	set feed_url to "http://is.gd/api.php?longurl=" & feed_url
+	-- Build the GET request for the Tr.im API
+	set feed_url to "http://api.tr.im/v1/trim_simple?url=" & feed_url
 	-- Submit the GET request and copy the results to clipboard
 	set cmd to "curl " & feed_url
 	set feed_url to (do shell script cmd)
