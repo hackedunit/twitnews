@@ -30,10 +30,17 @@ display dialog "Edit your Twitter status" with title "TwitNews" default answer t
 set tweet to (text returned of result)
 
 -- get login from keychain
-tell application "Keychain Scripting"
-	set twitter_key to first Internet key of current keychain whose server is "twitter.com"
-	set twitter_login to quoted form of (account of twitter_key & ":" & password of twitter_key)
-end tell
+try
+	tell application "Keychain Scripting" to set twitter_key to first generic key of current keychain whose name is "twitnews"
+	tell application "Keychain Scripting" to set twitter_login to quoted form of (account of twitter_key & ":" & password of twitter_key)
+on error
+	display dialog "Enter your Twitter username" default answer "" buttons {"OK"} default button 1
+	set keychain_entry_user to (text returned of result)
+	display dialog "Enter your password" default answer "" buttons {"OK"} default button 1
+	set keychain_entry_password to (text returned of result)
+	tell application "Keychain Scripting" to make new generic key with properties {name:"twitnews", account:keychain_entry_user, password:keychain_entry_password}
+	set twitter_login to quoted form of (keychain_entry_user & ":" & keychain_entry_password)
+end try
 
 -- post to twitter
 set twitter_status to quoted form of ("status=" & tweet)
