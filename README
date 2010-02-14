@@ -1,8 +1,8 @@
-The script needs you to save your Twitter login credentials in your keychain or else you will get an error. To do this, tell Safari to save your login details to Keychain while you login to Twitter or you can do it manually in the keychain app by selecting ‘New password item’ and set Keychain item name as http://twitter.com and fill in your Twitter username and password in the following fields.
+Applescript to post the currently selected news item in NetNewsWire to Twitter. Asks for your twitter username and password when run for the first time, and saves it to the system keychain. Script also trims the URL to the news item using Tr.im URL shortener and lets you edit the tweet.
 
 Installation
 ============
 
 Download the script TwitNews, uncompress and drop it into ~/Library/Application Support/NetNewsWire/Scripts. Now you can access the script from the scripts menu on NetNewsWire.
 
-Please visit my blog for more details : http://blog.tinucleatus.com/?p=204
+Please visit my blog for more details : http://blog.tinucleatus.com/?tag=twitnews
